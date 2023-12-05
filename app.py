@@ -17,6 +17,12 @@ from subprocess import PIPE, run
 
 from demo.animate import MagicAnimate
 
+from huggingface_hub import snapshot_download
+
+snapshot_download(repo_id="runwayml/stable-diffusion-v1-5", local_dir="./stable-diffusion-v1-5")
+snapshot_download(repo_id="stabilityai/sd-vae-ft-mse", local_dir="./sd-vae-ft-mse")
+snapshot_download(repo_id="zcxu-eric/MagicAnimate", local_dir="./MagicAnimate")
+
 animator = MagicAnimate()
 
 def animate(reference_image, motion_sequence_state, seed, steps, guidance_scale):
@@ -93,7 +99,7 @@ with gr.Blocks() as demo:
             ["inputs/applications/source_image/multi1_source.png", "inputs/applications/driving/densepose/multi_dancing.mp4"],
         ],
         inputs=[reference_image, motion_sequence],
-        outputs=animation,
+        outputs=animation
     )
 
 
