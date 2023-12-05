@@ -102,5 +102,5 @@ with gr.Blocks() as demo:
         outputs=animation
     )
 
-
+demo.queue()
 demo.launch(share=True)
