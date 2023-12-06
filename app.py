@@ -12,6 +12,7 @@ import argparse
 import imageio
 import numpy as np
 import gradio as gr
+import os
 from PIL import Image
 from subprocess import PIPE, run
 
