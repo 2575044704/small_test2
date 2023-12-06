@@ -23,6 +23,12 @@ snapshot_download(repo_id="runwayml/stable-diffusion-v1-5", local_dir="./stable-
 snapshot_download(repo_id="stabilityai/sd-vae-ft-mse", local_dir="./sd-vae-ft-mse")
 snapshot_download(repo_id="zcxu-eric/MagicAnimate", local_dir="./MagicAnimate")
 
+is_spaces = True if "SPACE_ID" in os.environ else False
+true_for_shared_ui = False #This will be true only if you are in a shared UI
+if(is_spaces):
+    true_for_shared_ui = True if "zcxu-eric/magicanimate" in os.environ['SPACE_ID'] else False
+
+    
 animator = MagicAnimate()
 
 def animate(reference_image, motion_sequence_state, seed=1, steps=25, guidance_scale=7.5):
@@ -101,7 +107,7 @@ with gr.Blocks() as demo:
         ],
         inputs=[reference_image, motion_sequence],
         outputs=animation,
-        cache_examples=True
+        cache_examples=true_for_shared_ui
     )
 
 demo.queue(max_size=15)
