@@ -12,6 +12,7 @@ import argparse
 import imageio
 import numpy as np
 import gradio as gr
+import os
 from PIL import Image
 from subprocess import PIPE, run
 
@@ -23,9 +24,15 @@ snapshot_download(repo_id="runwayml/stable-diffusion-v1-5", local_dir="./stable-
 snapshot_download(repo_id="stabilityai/sd-vae-ft-mse", local_dir="./sd-vae-ft-mse")
 snapshot_download(repo_id="zcxu-eric/MagicAnimate", local_dir="./MagicAnimate")
 
+is_spaces = True if "SPACE_ID" in os.environ else False
+true_for_shared_ui = False #This will be true only if you are in a shared UI
+if(is_spaces):
+    true_for_shared_ui = True if "zcxu-eric/magicanimate" in os.environ['SPACE_ID'] else False
+
+    
 animator = MagicAnimate()
 
-def animate(reference_image, motion_sequence_state, seed, steps, guidance_scale):
+def animate(reference_image, motion_sequence_state, seed=1, steps=25, guidance_scale=7.5):
     return animator(reference_image, motion_sequence_state, seed, steps, guidance_scale)
 
 with gr.Blocks() as demo:
@@ -70,13 +77,15 @@ with gr.Blocks() as demo:
     motion_sequence.upload(
         read_video,
         motion_sequence,
-        motion_sequence
+        motion_sequence,
+        queue=False
     )
     # when `first_frame` is updated
     reference_image.upload(
         read_image,
         reference_image,
-        reference_image
+        reference_image,
+        queue=False
     )
     # when the `submit` button is clicked
     submit.click(
@@ -88,6 +97,7 @@ with gr.Blocks() as demo:
     # Examples
     gr.Markdown("## Examples")
     gr.Examples(
+        fn=animate,
         examples=[
             ["inputs/applications/source_image/monalisa.png", "inputs/applications/driving/densepose/running.mp4"],
             ["inputs/applications/source_image/126313770_0_final.png", "inputs/applications/driving/densepose/demo4.mp4"],
@@ -96,8 +106,9 @@ with gr.Blocks() as demo:
             ["inputs/applications/source_image/multi1_source.png", "inputs/applications/driving/densepose/multi_dancing.mp4"],
         ],
         inputs=[reference_image, motion_sequence],
-        outputs=animation
+        outputs=animation,
+        cache_examples=true_for_shared_ui
     )
 
-demo.queue(max_size=100)
+demo.queue(max_size=15)
 demo.launch(share=True)
