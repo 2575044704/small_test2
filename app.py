@@ -57,7 +57,7 @@ with gr.Blocks() as demo:
     
     with gr.Row():
         reference_image  = gr.Image(label="Reference Image")
-        motion_sequence  = gr.Video(format="mp4", label="Motion Sequence",max_length=1)
+        motion_sequence  = gr.Video(format="mp4", label="Motion Sequence",max_length=5)
         
         with gr.Column():
             random_seed         = gr.Textbox(label="Random seed", value=1, info="default: -1")
