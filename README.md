@@ -4,8 +4,8 @@ emoji: 💃
 colorFrom: purple
 colorTo: purple
 sdk: gradio
-sdk_version: 4.4.0
-python_version: 3.8
+sdk_version: 4.9.0
+python_version: 3.11
 app_file: app.py
 models:
  - zcxu-eric/MagicAnimate
