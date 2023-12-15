@@ -29,7 +29,7 @@ true_for_shared_ui = False #This will be true only if you are in a shared UI
 if(is_spaces):
     true_for_shared_ui = True if "zcxu-eric/magicanimate" in os.environ['SPACE_ID'] else False
 
-    
+
 animator = MagicAnimate()
 
 def animate(reference_image, motion_sequence_state, seed=1, steps=25, guidance_scale=7.5):
@@ -54,11 +54,11 @@ with gr.Blocks() as demo:
         </div>
         """)
     animation = gr.Video(format="mp4", label="Animation Results", autoplay=True)
-    
+
     with gr.Row():
         reference_image  = gr.Image(label="Reference Image")
         motion_sequence  = gr.Video(format="mp4", label="Motion Sequence",max_length=5)
-        
+
         with gr.Column():
             random_seed         = gr.Textbox(label="Random seed", value=1, info="default: -1")
             sampling_steps      = gr.Textbox(label="Sampling steps", value=25, info="default: 25")
@@ -69,10 +69,10 @@ with gr.Blocks() as demo:
         reader = imageio.get_reader(video)
         fps = reader.get_meta_data()['fps']
         return video
-    
+
     def read_image(image, size=512):
         return np.array(Image.fromarray(image).resize((size, size)))
-    
+
     # when user uploads a new video
     motion_sequence.upload(
         read_video,
@@ -90,7 +90,7 @@ with gr.Blocks() as demo:
     # when the `submit` button is clicked
     submit.click(
         animate,
-        [reference_image, motion_sequence, random_seed, sampling_steps, guidance_scale], 
+        [reference_image, motion_sequence, random_seed, sampling_steps, guidance_scale],
         animation
     )
 
@@ -110,5 +110,5 @@ with gr.Blocks() as demo:
         cache_examples=true_for_shared_ui
     )
 
-demo.queue(max_size=15)
-demo.launch(share=True)
+demo.queue(max_size=15, api_open=False)
+demo.launch(share=True, show_api=False)
