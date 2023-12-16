@@ -110,5 +110,5 @@ with gr.Blocks() as demo:
         cache_examples=true_for_shared_ui
     )
 
-demo.queue(max_size=15, api_open=False)
+# demo.queue(max_size=15, api_open=False)
 demo.launch(share=True, show_api=False)
